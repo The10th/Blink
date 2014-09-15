@@ -3,16 +3,15 @@
 <head>
 	<style type="text/css">
 
-	.secbox{
-		border:2px solid aquamarine;
+	.col-md-3{
+		border:2px solid #30AED3;
 		text-align: center;
-	}
-	#awesome{
 		word-wrap:break-word;
 	}
+
 	.secla{
 		border:1px solid #aaa;
-		height: 350px;
+		height: 110px;
 		overflow-y: scroll; 
 	}
 	textarea {
@@ -20,6 +19,10 @@
 	}
 	ol{
 		vertical-align: bottom;
+	}
+	.secbox{
+		height:109px;
+		width:258px;
 	}
 
 	</style>
@@ -37,6 +40,12 @@
 
 
 	$(document).ready(function(){
+
+		var box = $('.secla').position();
+		console.log(box);
+
+		var inside = $('.secla').innerHeight();
+		console.log(inside)
 
 		function maxLength(el) {    
 			if (!('maxLength' in el)) {
@@ -56,39 +65,81 @@
 
     	}
 
-
+    	var count = 0;
     	$(secs).click(function(){
 				// event.preventDefault(); <-- prevents the page from reloading on sumbission 
+				count++;
 				var fusec =	$('#texs').val();
-				$('#fus').append("<div class='col-md-3 secbox'><p id='awesome'>"+fusec+"</p></div>")
+				$('#fus').append("<div class='col-md-3 secbox'><p id='awesome"+count+"''>"+fusec+"</p></div>")
 				$('#texs').val('');
 				var remaining = 150 - $('#texs').val().length;
 				$('.countdown').text(remaining + ' characters remaining')
+				$('#secs').prop('disabled', true);
 				return false;
 			})
 
-    	$('#secrets').on('keyup' , function() {
-    		if( $.trim($('#texs').val()).length > 0 ){
-    			$('#secs').prop('disabled', false);
-    		}
-    		else {
-    			$('#secs').prop('disabled', true);
+    	$('.secla').scroll(function(){
+    		var divPos = $('.secbox').position();
+    		console.log(box).top;
+    		console.log(divPos.top+90);
+    		if(divPos.top+90 === box.top){
+    			$('.secbox').fadeOut();
+    			$('.secbox').on('fadeOut', function(){
+    				$('.secbox').remove();
+    			})
+    			console.log(this);
     		}
     	});
 
 
+	    // 		var pos = $('.secbox:last').position();
+	    // 		var hos = $('.secbox:last').height();
+	    // 		var wos = $('.secbox:last').width();
+					// console.log(pos)
+					// console.log(hos)
+					// console.log(wos)
+				// var link = $('.secla');
 
-    	$(fus).delegate(".secbox", "click", function(e){
-    		e.target.parentNode.remove();
-				// console.log(e.target.parentNode);
-			})
-    	$('#fus').jscroll();
+				// var offset = link.offset();
+				// var top = offset.top;
+				// var left = offset.left;
+				// var bottom = $('#secbox').height() - link.height();
+				// bottom = bottom - offset.top;
+				// var right = $('#secbox').width() - link.width();
+				// right =  right - offset.left;
+				
+				// console.log(bottom);
+				// console.log(right);
 
-    	updateCountdown();
-    	$('#texs').change(updateCountdown);
-    	$('#texs').keyup(updateCountdown);
+				// $('#fus').find('.secbox').first().fadeOut();
+				// console.log('scrolled');
+    	// });
 
-    });
+
+$('#secrets').on('click' , function() {
+	if( $.trim($('#texs').val()).length > 0 ){
+		$('#secs').prop('disabled', false);
+	}
+	else {
+		$('#secs').prop('disabled', true);
+	}
+
+});
+
+   //  	$(fus).delegate(".secbox", "click", function(e){
+   //  		e.target.parentNode.remove();
+			// })
+$('#fus').jscroll();
+
+updateCountdown();
+$('#texs').change(updateCountdown);
+$('#texs').keyup(updateCountdown);
+
+});
+
+$('#refresh').click(function() {
+	location.reload();
+});
 
 </script>
 </head>
@@ -104,9 +155,9 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Secrets...</a>
+				<a id='refresh' class="navbar-brand" href="">Secrets...</a>
 			</div>
-			<div class="navbar-collapse collapse">
+		<!-- 	<div class="navbar-collapse collapse">
 				<form class="navbar-form navbar-right" role="form">
 					<div class="form-group">
 						<input type="text" placeholder="Email" class="form-control">
@@ -116,7 +167,7 @@
 					</div>
 					<button type="submit" class="btn btn-info">Sign in</button>
 					<button type="submit" class="btn btn-danger">Sign up</button>
-				</form>
+				</form> -->
 			</div><!--/.navbar-collapse -->
 		</div>
 	</div>
@@ -129,7 +180,7 @@
 		</div>
 
 		<form align='center' id='secrets'>
-			Secret:
+			Secret: 
 			<div><textarea maxlength="150" name='texs' id='texs'></textarea></div>
 			<span class="countdown"></span>
 			<div><button id='secs' type='submit' class='btn btn-info' value='submit' disabled>Submit Secret</button></div>
@@ -143,12 +194,8 @@
 
 	</div> <!-- /container -->
 	<ol align='center' class="breadcrumb">
-		<li><a href="#">Log Out</a></li>
+		<li><a href="https://www.youtube.com/watch?v=jKXLkWrBo7o">Don't...blink</a></li>
 	</ol>
 
 
-	<!-- 	$("#texs").keydown(function(){
-		var counter = $("#texs").simplyCountable()
-		console.log(counter)
-	}); -->
 	
