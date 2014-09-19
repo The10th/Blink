@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 	<style type="text/css">
+	
+	*{
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
 
 	.col-md-3{
 		border:2px solid #30AED3;
@@ -11,7 +20,7 @@
 
 	.secla{
 		border:1px solid #aaa;
-		height: 110px;
+		height: 336px;
 		overflow-y: scroll; 
 	}
 	textarea {
@@ -21,8 +30,10 @@
 		vertical-align: bottom;
 	}
 	.secbox{
-		height:109px;
+		height:110px;
 		width:258px;
+		overflow-y: scroll; 
+		
 	}
 
 	</style>
@@ -38,14 +49,12 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 
-
 	$(document).ready(function(){
 
-		var box = $('.secla').position();
-		console.log(box);
-
 		var inside = $('.secla').innerHeight();
-		console.log(inside)
+		var count = 0;
+		var divs = 0;
+
 
 		function maxLength(el) {    
 			if (!('maxLength' in el)) {
@@ -65,81 +74,80 @@
 
     	}
 
-    	var count = 0;
     	$(secs).click(function(){
-				// event.preventDefault(); <-- prevents the page from reloading on sumbission 
-				count++;
-				var fusec =	$('#texs').val();
-				$('#fus').append("<div class='col-md-3 secbox'><p id='awesome"+count+"''>"+fusec+"</p></div>")
-				$('#texs').val('');
-				var remaining = 150 - $('#texs').val().length;
-				$('.countdown').text(remaining + ' characters remaining')
-				$('#secs').prop('disabled', true);
-				return false;
-			})
+    		
+    		function calculateLIsInRow() {
+
+
+    			$('.fussy').each(function() {
+    				if($(this).prev().length > 0) {
+    					if($(this).position().top != $(this).prev().position().top) return false;
+    					divs++;
+    				}
+    				else {
+    					divs++;   
+    				}
+    			});
+    			console.log('No: of div in a row = ' + divs);
+    		}	
+    		calculateLIsInRow();
+
+    		$('#secla').resize(calculateLIsInRow);
+
+    		count++;
+    		var fusec =	$('#texs').val();
+    		// if (divs <= 4){
+    			$('.fussy').append("<div class='col-md-3 secbox'><p id='awesome"+count+"''>"+fusec+"</p></div>")
+    		// } else if (divs > 4){
+
+    		// 	$('.rossy').append("<div class='col-md-3 secbox'><p id='awesome"+count+"''>"+fusec+"</p></div>")
+    		// }
+
+
+    		$('#texs').val('');
+    		var remaining = 150 - $('#texs').val().length;
+    		$('.countdown').text(remaining + ' characters remaining')
+    		$('#secs').prop('disabled', true);
+    		return false;
+    	})
 
     	$('.secla').scroll(function(){
-    		var divPos = $('.secbox').position();
-    		console.log(box).top;
-    		console.log(divPos.top+90);
-    		if(divPos.top+90 === box.top){
-    			$('.secbox').fadeOut();
-    			$('.secbox').on('fadeOut', function(){
-    				$('.secbox').remove();
-    			})
-    			console.log(this);
-    		}
+
+    		//109 is $('.secla').height()
+    		$('.secla').scrollTop() >= $('.secla').height()+100;
+    		$('.fussy:first-child').fadeOut(500, function(){
+    			$(this).remove();
+    			// $('#ro').attr('id', 'fus')
+    			// $('.rossy').attr('class','fussy')
+    			$('#fus').append("<div class='col large 3 fussy'></div>")
+    			// divs - 4;
+    			// $('#ro').attr('id', 'fus');
+    			// console.log(divs)
+    		});
+
     	});
 
 
-	    // 		var pos = $('.secbox:last').position();
-	    // 		var hos = $('.secbox:last').height();
-	    // 		var wos = $('.secbox:last').width();
-					// console.log(pos)
-					// console.log(hos)
-					// console.log(wos)
-				// var link = $('.secla');
+    	$('#secrets').on('click' , function() {
+    		if( $.trim($('#texs').val()).length > 0 ){
+    			$('#secs').prop('disabled', false);
+    		}
+    		else {
+    			$('#secs').prop('disabled', true);
+    		}
 
-				// var offset = link.offset();
-				// var top = offset.top;
-				// var left = offset.left;
-				// var bottom = $('#secbox').height() - link.height();
-				// bottom = bottom - offset.top;
-				// var right = $('#secbox').width() - link.width();
-				// right =  right - offset.left;
-				
-				// console.log(bottom);
-				// console.log(right);
+    	});
 
-				// $('#fus').find('.secbox').first().fadeOut();
-				// console.log('scrolled');
-    	// });
+    	updateCountdown();
+    	$('#texs').change(updateCountdown);
+    	$('#texs').keyup(updateCountdown);
 
-
-$('#secrets').on('click' , function() {
-	if( $.trim($('#texs').val()).length > 0 ){
-		$('#secs').prop('disabled', false);
-	}
-	else {
-		$('#secs').prop('disabled', true);
-	}
-
-});
-
-   //  	$(fus).delegate(".secbox", "click", function(e){
-   //  		e.target.parentNode.remove();
-			// })
-$('#fus').jscroll();
-
-updateCountdown();
-$('#texs').change(updateCountdown);
-$('#texs').keyup(updateCountdown);
-
-});
+    });
 
 $('#refresh').click(function() {
 	location.reload();
 });
+
 
 </script>
 </head>
@@ -172,7 +180,6 @@ $('#refresh').click(function() {
 		</div>
 	</div>
 
-	<!-- Main jumbotron for a primary marketing message or call to action -->
 	<div class="jumbotron">
 		<div class="container">		
 			<h1 align='center'>Don't Blink</h1>
@@ -189,8 +196,19 @@ $('#refresh').click(function() {
 	</div>
 
 	<div class="container secla">
-		<!-- Example row of columns -->
-		<div id='fus' class="row"></div>
+
+		<div>
+			<div class='row' id='fus'>
+				<div class='col large 3 fussy'></div>
+			</div>
+
+			
+		<!-- 	<div class='row' id='ro'>
+				<div class='col large 3 rossy'></div>
+			</div> -->
+
+		</div>
+
 
 	</div> <!-- /container -->
 	<ol align='center' class="breadcrumb">
